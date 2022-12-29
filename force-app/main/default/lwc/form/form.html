@@ -1,0 +1,27 @@
+<template>
+
+
+    <div class="slds-grid slds-gutters slds-align_absolute-center" style="height: 100vh">
+        <div class="slds-col slds-large-size_4-of-12">
+            <div class="slds-box">
+                <div class="textSize">
+                    <p>How would you evaluate our approach when our Agent has talked to you? </p>
+                    <textarea class="textarea"></textarea>
+                </div>
+        
+                <div>
+                    <lightning-checkbox-group name="Checkbox Group"
+                    label="Checkbox Group"
+                    options={options}
+                    value={value}
+                    required></lightning-checkbox-group>
+                </div>
+        
+        
+                <lightning-button label="Submit" class="slds-align_absolute-center"></lightning-button>
+            </div>
+        </div>
+    </div>
+
+
+</template>
