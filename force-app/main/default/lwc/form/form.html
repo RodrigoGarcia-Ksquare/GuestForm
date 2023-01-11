@@ -1,7 +1,64 @@
 <template>
 
+    <div class="slds-grid slds-gutters slds-align_absolute-center" style="flex-direction: column;" onsubmit={handleSubmit}>
 
-    <div class="slds-grid slds-gutters slds-align_absolute-center" style="height: 100vh">
+        <lightning-record-edit-form>
+            <template if:true={formFields.data}>
+                <template for:each={formFields.data} for:item="fields">
+                    <div key={fields.Id}>
+
+                        <template if:false={fields.isRadio__c}>
+                            <lightning-input    
+                            class={fields.Name}
+                            type={fields.FieldType__c} 
+                            name={fields.Name}
+                            label={fields.Label__c}
+                            placeholder={fields.Placeholder__c}
+                            onchange={handleChange}>
+                          </lightning-input>
+                        </template>
+
+                        <template if:true={fields.isRadio__c}>
+                            <lightning-input   
+                            class={fields.Name}
+                            type="checkbox"
+                            name={fields.Name}
+                            label={fields.Label__c}
+                            placeholder={fields.Placeholder__c}
+                            onchange={handleChange}>
+                          </lightning-input>
+                        </template>
+
+                    </div>
+                </template>
+            </template>
+        </lightning-record-edit-form>
+
+        <lightning-button
+            variant="brand"
+            name="submit"
+            type="submit"
+            label="Submit"
+            onclick={handleSubmit}>
+        </lightning-button>
+
+    </div>
+
+    <!-- <lightning-card title="Form Fields" class="slds-grid slds-gutters slds-align_absolute-center">
+        <div>
+            <template if:true={formFields.data}>
+                <template for:each={formFields.data} for:item="fields">
+                    <div key={fields.Id}>
+                        <p>{fields.Label__c}</p>
+                        <lightning-input-field field-name={FieldType__c}></lightning-input-field>
+                    </div>
+               </template>
+            </template>
+        </div>
+    </lightning-card> -->
+
+    <!-- MARKUP ONLY -->
+    <!-- <div class="slds-grid slds-gutters slds-align_absolute-center" style="height: 100vh">
         <div class="slds-col slds-large-size_4-of-12">
             <div class="slds-box">
                 <div class="textSize">
@@ -11,7 +68,7 @@
         
                 <div>
                     <lightning-checkbox-group name="Checkbox Group"
-                    label="Checkbox Group"
+                    label="Did you like our Attendance?"
                     options={options}
                     value={value}
                     required></lightning-checkbox-group>
@@ -21,7 +78,6 @@
                 <lightning-button label="Submit" class="slds-align_absolute-center"></lightning-button>
             </div>
         </div>
-    </div>
-
+    </div> -->
 
 </template>
