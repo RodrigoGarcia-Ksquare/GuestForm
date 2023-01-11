@@ -1,0 +1,10 @@
+[
+    {
+        "sobject": "Form_Field__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": [
+            "Form_Field__cs.json"
+        ]
+    }
+]
