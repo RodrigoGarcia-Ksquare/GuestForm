@@ -19,4 +19,35 @@ public with sharing class FormBuilderController {
         }
     }
 
+    @AuraEnabled
+    public static void saveFormResponse(String formId, List<Form_Field__c> responseList){
+        try {
+
+            Form_Response__c formResponse = new Form_Response__c();
+            formResponse.Form_ID__c = formId;
+            insert formResponse;
+            system.debug(formResponse.Id);
+
+            List<Field_Response__c> respList = new List<Field_Response__c>();
+
+            for (Form_Field__c f : responseList) {
+                Field_Response__c resp = new Field_Response__c();
+                resp.Form_Response__c = formResponse.Id;
+                resp.FieldType__c = f.FieldType__c;
+                if(f.FieldType__c == 'checkbox'){
+                    if (f.isRadio__c) {resp.Answer__c = 'Yes';}
+                    else {resp.Answer__c = 'No';}
+                }
+                else{resp.Answer__c = f.Value__c;}
+                respList.add(resp);
+            }
+
+            
+            insert respList;
+            
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
 }
