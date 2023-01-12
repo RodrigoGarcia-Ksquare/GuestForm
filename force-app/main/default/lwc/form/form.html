@@ -1,6 +1,6 @@
 <template>
 
-    <div class="slds-grid slds-gutters slds-align_absolute-center" style="flex-direction: column;" onsubmit={handleSubmit}>
+    <div class="slds-grid slds-gutters slds-align_absolute-center" style="flex-direction: column;">
 
         <lightning-record-edit-form>
             <template if:true={formFields.data}>
@@ -21,7 +21,7 @@
                         <template if:true={fields.isRadio__c}>
                             <lightning-input   
                             class={fields.Name}
-                            type="checkbox"
+                            type={fields.FieldType__c} 
                             name={fields.Name}
                             label={fields.Label__c}
                             placeholder={fields.Placeholder__c}
@@ -37,7 +37,6 @@
         <lightning-button
             variant="brand"
             name="submit"
-            type="submit"
             label="Submit"
             onclick={handleSubmit}>
         </lightning-button>
