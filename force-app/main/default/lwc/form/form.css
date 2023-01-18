@@ -1,17 +1,43 @@
 :host {
-    --lwc-formLabelFontSize: large;
-    font-size: large;
+  --lwc-formLabelFontSize: large;
+  font-size: large;
 }
 
-.textSize{
-    font-size: large;
+.textSize {
+  font-size: large;
 }
 
-.textarea{
-    width: 100%;
-    height: 100px;
+.textarea {
+  width: 100%;
+  height: 100px;
 }
 
-.mediumCard{
-    width: 50%;
+.mediumCard {
+  width: 50%;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.custom-h1{
+    font-size: 2.5rem;
+    color: #0070d2;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.custom-container{
+    background-color: #f6f6f6;
+}
+
+.custom-form-field{
+    border-radius: 10px;
+}
+
+.custom-submit-button{
+    padding: 1rem 2rem;
+    margin: 2rem 0;
 }
