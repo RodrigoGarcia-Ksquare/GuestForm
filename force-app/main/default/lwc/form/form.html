@@ -1,47 +1,56 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 01-16-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
 <template>
-
-    <div class="slds-grid slds-gutters slds-align_absolute-center" style="flex-direction: column;">
-
-        <lightning-record-edit-form>
+    <div class="center slds-grid slds-gutters slds-align_absolute-center custom-container" style="flex-direction: column;">
+        <lightning-layout>
+            <lightning-layout-item padding="around-small" size="12">
+                <h1 class="slds-text-heading_medium custom-h1">Survey Form</h1>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-record-edit-form class="custom-form-field">
             <template if:true={formFields.data}>
                 <template for:each={formFields.data} for:item="fields">
-                    <div key={fields.Id}>
-
+                    <div key={fields.Id} class="slds-m-bottom_medium">
                         <template if:false={fields.isRadio__c}>
-                            <lightning-input    
-                            class={fields.Name}
-                            type={fields.FieldType__c} 
-                            name={fields.Name}
-                            label={fields.Label__c}
-                            placeholder={fields.Placeholder__c}
-                            onchange={handleChange}>
-                          </lightning-input>
+                            <lightning-input 
+                                class={fields.Name}
+                                type={fields.FieldType__c}
+                                name={fields.Name}
+                                label={fields.Label__c}
+                                placeholder={fields.Placeholder__c}
+                                onchange={handleChange}>
+                            </lightning-input>
                         </template>
-
                         <template if:true={fields.isRadio__c}>
-                            <lightning-input   
-                            class={fields.Name}
-                            type={fields.FieldType__c} 
-                            name={fields.Name}
-                            label={fields.Label__c}
-                            placeholder={fields.Placeholder__c}
-                            onchange={handleChange}>
-                          </lightning-input>
+                            <lightning-input
+                                class={fields.Name}
+                                type={fields.FieldType__c}
+                                name={fields.Name}
+                                label={fields.Label__c}
+                                placeholder={fields.Placeholder__c}
+                                onchange={handleChange}>
+                            </lightning-input>
                         </template>
-
                     </div>
                 </template>
             </template>
         </lightning-record-edit-form>
-
-        <lightning-button
-            variant="brand"
-            name="submit"
-            label="Submit"
-            onclick={handleSubmit}>
-        </lightning-button>
-
+        <div>
+            <lightning-button
+                class="custom-submit-button"
+                variant="brand"
+                name="submit"
+                label="Submit"
+                onclick={handleSubmit}>
+            </lightning-button>
+        </div>
     </div>
+</template>
 
     <!-- <lightning-card title="Form Fields" class="slds-grid slds-gutters slds-align_absolute-center">
         <div>
