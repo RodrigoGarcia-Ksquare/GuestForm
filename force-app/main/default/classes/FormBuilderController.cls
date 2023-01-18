@@ -44,6 +44,12 @@ public with sharing class FormBuilderController {
 
             
             insert respList;
+
+            //STARTS EMAIL PROCESS
+
+            EmailUtility.emailManager(formResponse.Id);
+
+            //ENDS EMAIL PROCESS
             
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
