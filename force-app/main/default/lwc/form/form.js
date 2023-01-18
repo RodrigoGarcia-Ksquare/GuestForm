@@ -1,6 +1,9 @@
 import { LightningElement, wire, track } from 'lwc';
 import getFields from '@salesforce/apex/FormBuilderController.getFields';
 import saveFormResponse from '@salesforce/apex/FormBuilderController.saveFormResponse';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
+document.documentElement.style.overflow = 'hidden';
 
 //Function to clean the code later on
 //Create the list of answers
@@ -82,10 +85,25 @@ export default class Form extends LightningElement {
         let responseList = this.responseList;
 
         saveFormResponse({formId: id, responseList: responseList});     //Calling the method to create the records
+        this.showSuccess();
+        
         console.log('FORM ID',this.formId);
         console.log('REPONSE LIST',JSON.stringify(this.responseList));
         
     }
+
+    showSuccess(){
+        const evt = new ShowToastEvent({
+            title: 'Success',
+            message: 'Saved Responses',
+            variant: 'success'
+        })
+
+        //console.log('success');
+
+        this.dispatchEvent(evt);
+    }
+
 
     //MARKUP ONLY
     // value = [];
