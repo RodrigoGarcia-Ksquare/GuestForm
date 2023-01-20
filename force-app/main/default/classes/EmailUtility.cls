@@ -1,7 +1,9 @@
-public with sharing class EmailUtility {
+public without sharing class EmailUtility {
     public static void emailManager(String formRespId) {
+        //Email creation
+        system.debug('EmailManager' + formRespId);
         List<Messaging.SingleEmailMessage> emailList = new List<Messaging.SingleEmailMessage>();
-        List<String> address = new List<String>{'rodrigo.garcia@itksquare.edu.mx'};
+        List<String> address = new List<String>{'rodrigo_gl96@hotmail.com'};
             
        	Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setSubject('Codey Solutions - Feedback Answer');
@@ -15,20 +17,21 @@ public with sharing class EmailUtility {
                                 + 'Codey solutions.');
         mail.setToAddresses(address);
         emailList.add(mail);
-        
         if(!emailList.isEmpty()){
             Messaging.sendEmail(emailList);
+            system.debug(address);
+            system.debug('Sen envioooooooo');
         }
     }
 
     public static void emailGuest(List<String> enURLString, Blob key) {
-        
         system.debug('ENTROOOOOO');
         List<Messaging.SingleEmailMessage> emailList = new List<Messaging.SingleEmailMessage>();
         Map<Id, String> mapAccount = new Map<Id, String>();
         List<Id> accId = new List<Id>();
 
         for (String enURL : enURLString) {
+            //Encriptation
             Blob dest = EncodingUtil.base64Decode(enURL);
             Blob decrypted = Crypto.decryptWithManagedIv('AES256', key, dest);
             String decryptedText = decrypted.toString();
@@ -37,16 +40,19 @@ public with sharing class EmailUtility {
             String[] decrypInfo = decryptedText.split(' ');
                 system.debug('decrypInfo');
                 system.debug(decrypInfo);
-            String URL = 'https://codey4-dev-ed.develop.my.site.com/s/form' + enURL;
-            mapAccount.put(Id.valueOf(decrypInfo[0]), URL);
+            String URL = 'https://codey4-dev-ed.develop.my.site.com/s/form/?EncryptedId__c=' + enURL;
+            mapAccount.put(Id.valueOf(decrypInfo[2]), URL);
                 system.debug('mapAccount');
                 system.debug(mapAccount);
             accId.add(Id.valueOf(decrypInfo[2]));
+                system.debug('accId');
+                system.debug(accId);
         }
 
-        for (Account a : [SELECT Id, Email__c FROM Account WHERE Id IN :accId]) {
+        for (Account a : [SELECT Id, Name, Email__c FROM Account WHERE Id IN :accId]) {
+            system.debug(a.Name);
             if (mapAccount.containsKey(a.Id)) {
-
+                system.debug('ENTRO A LA 52');
                 Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
                 List<String> address = new List<String>{String.valueOf(a.Email__c)};
                 system.debug(address);
@@ -65,7 +71,8 @@ public with sharing class EmailUtility {
         }
             
         if(!emailList.isEmpty()){
-            Messaging.sendEmail(emailList);
+            //emailManager('a04Dn000002UksXIAS');
+            //Messaging.sendEmail(emailList);
         }
 
     }

@@ -1,91 +1,83 @@
-<!--
-  @description       : 
-  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
-  @group             : 
-  @last modified on  : 01-16-2023
-  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
--->
 <template>
+
     <div class="center slds-grid slds-gutters slds-align_absolute-center custom-container" style="flex-direction: column;">
+
         <lightning-layout>
             <lightning-layout-item padding="around-small" size="12">
                 <h1 class="slds-text-heading_medium custom-h1">Survey Form</h1>
             </lightning-layout-item>
         </lightning-layout>
-        <lightning-record-edit-form class="custom-form-field">
-            <template if:true={formFields.data}>
-                <template for:each={formFields.data} for:item="fields">
-                    <div key={fields.Id} class="slds-m-bottom_medium">
-                        <template if:false={fields.isRadio__c}>
-                            <lightning-input 
-                                class={fields.Name}
-                                type={fields.FieldType__c}
-                                name={fields.Name}
-                                label={fields.Label__c}
-                                placeholder={fields.Placeholder__c}
-                                onchange={handleChange}>
-                            </lightning-input>
-                        </template>
-                        <template if:true={fields.isRadio__c}>
-                            <lightning-input
-                                class={fields.Name}
-                                type={fields.FieldType__c}
-                                name={fields.Name}
-                                label={fields.Label__c}
-                                placeholder={fields.Placeholder__c}
-                                onchange={handleChange}>
-                            </lightning-input>
-                        </template>
-                    </div>
+
+        <template if:true={isActive}>
+
+            <lightning-record-edit-form class="custom-form-field">
+                <template if:true={formFields.data}>
+                    <template for:each={formFields.data} for:item="fields">
+                        <div key={fields.Id}>
+    
+                            <template if:false={fields.isRadio__c}>
+                                <lightning-input 
+                                    class={fields.Name}
+                                    type={fields.FieldType__c}
+                                    name={fields.Name}
+                                    label={fields.Label__c}
+                                    placeholder={fields.Placeholder__c}
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </template>
+                            
+                            <template if:true={fields.isRadio__c}>
+                                <lightning-input
+                                    class={fields.Name}
+                                    type={fields.FieldType__c}
+                                    name={fields.Name}
+                                    label={fields.Label__c}
+                                    placeholder={fields.Placeholder__c}
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </template>
+    
+                        </div>
+                    </template>
                 </template>
-            </template>
-        </lightning-record-edit-form>
-        <div>
-            <lightning-button
-                class="custom-submit-button"
-                variant="brand"
-                name="submit"
-                label="Submit"
-                onclick={handleSubmit}>
-            </lightning-button>
-        </div>
-    </div>
-</template>
-
-    <!-- <lightning-card title="Form Fields" class="slds-grid slds-gutters slds-align_absolute-center">
-        <div>
-            <template if:true={formFields.data}>
-                <template for:each={formFields.data} for:item="fields">
-                    <div key={fields.Id}>
-                        <p>{fields.Label__c}</p>
-                        <lightning-input-field field-name={FieldType__c}></lightning-input-field>
-                    </div>
-               </template>
-            </template>
-        </div>
-    </lightning-card> -->
-
-    <!-- MARKUP ONLY -->
-    <!-- <div class="slds-grid slds-gutters slds-align_absolute-center" style="height: 100vh">
-        <div class="slds-col slds-large-size_4-of-12">
-            <div class="slds-box">
-                <div class="textSize">
-                    <p>How would you evaluate our approach when our Agent has talked to you? </p>
-                    <textarea class="textarea"></textarea>
-                </div>
-        
-                <div>
-                    <lightning-checkbox-group name="Checkbox Group"
-                    label="Did you like our Attendance?"
-                    options={options}
-                    value={value}
-                    required></lightning-checkbox-group>
-                </div>
-        
-        
-                <lightning-button label="Submit" class="slds-align_absolute-center"></lightning-button>
+            </lightning-record-edit-form>
+    
+            <div>
+                <lightning-button
+                    class="custom-submit-button"
+                    variant="brand"
+                    name="submit"
+                    label="Submit"
+                    onclick={handleSubmit}>
+                </lightning-button>
             </div>
-        </div>
-    </div> -->
+
+        </template>
+        
+        <template if:false={isActive}>
+            <div style="display: flex;">
+
+                <div>
+                    <img src={codey2_logo}>
+                </div>
+
+                <div class=slds-align_absolute-center>
+                    <div style="display: grid;">
+                        <div>
+                            <h1>Dear customer: </h1>
+                        </div>
+                        <div>
+                            <p>Thank you for filling the form, the information
+                                has been sent to review by the Codey Team<br/>
+                                Thank you for time!</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </template>
+        
+
+    </div>
 
 </template>

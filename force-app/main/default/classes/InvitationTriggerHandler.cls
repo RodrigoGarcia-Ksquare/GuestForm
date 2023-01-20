@@ -11,9 +11,10 @@ public class InvitationTriggerHandler extends TriggerHandler{
             Form_Invitation__c formInv = new Form_Invitation__c();
             formInv.Id = inv.Id;
 
-            String encryptedId = '\'' +inv.Id + ' ' + inv.Form__c + ' ' + inv.Account__c + '\'';
+            String encryptedId = inv.Id + ' ' + inv.Form__c + ' ' + inv.Account__c + ' '+ inv.CreatedDate;
             system.debug(encryptedId);
 
+            // String encrypted64 = EncryptationHandler.Encryptation(encryptedId);
             Blob source = Blob.valueOf(encryptedId);
             Blob encrypted = Crypto.encryptWithManagedIV('AES256', key, source);
             String encrypted64 = EncodingUtil.base64Encode(encrypted);
@@ -21,7 +22,7 @@ public class InvitationTriggerHandler extends TriggerHandler{
 
             if (String.isBlank(inv.EncryptedId__c)) {
                 formInv.EncryptedId__c = encrypted64;
-                formInv.URL__c = 'https://codey4-dev-ed.develop.my.site.com/s/form' + encrypted64;
+                formInv.URL__c = 'https://codey4-dev-ed.develop.my.site.com/s/form/?EncryptedId__c=' + encrypted64;
                 toUpdate.add(formInv);
                 encrypList.add(encrypted64);
             }
@@ -31,9 +32,8 @@ public class InvitationTriggerHandler extends TriggerHandler{
             
         }
 
-        //EmailUtility.emailGuest(encrypList, key);
-
         update toUpdate;
+        EmailUtility.emailGuest(encrypList, key);
     }
 
 }
