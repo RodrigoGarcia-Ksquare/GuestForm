@@ -1,27 +1,55 @@
 import { LightningElement, wire, track } from 'lwc';
 import getFields from '@salesforce/apex/FormBuilderController.getFields';
 import saveFormResponse from '@salesforce/apex/FormBuilderController.saveFormResponse';
+import getInv from '@salesforce/apex/FormBuilderController.getInv';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { CurrentPageReference } from 'lightning/navigation';
+
+import CODEY2_LOGO from '@salesforce/resourceUrl/Codey2'
 
 document.documentElement.style.overflow = 'hidden';
 
-//Function to clean the code later on
-//Create the list of answers
-var createResponse = function(questionResponse, responseObj) {
-    console.log('PROBANDO')
-}
 
 export default class Form extends LightningElement {
+
+    codey2_logo = CODEY2_LOGO;
 
     //Obtain the fields according to an specific Form
     //When getting the invitation Id it will be related to an specific form
     //Fields will be retrived into the HTML to be rendered
     @wire(getFields,{formId:'$formId'}) formFields;
+    //@wire(getInv,{Encryption:'$urlEnc'}) invitation;
     @track responseList = [];                                       //List to store responses in a given Form
 
-    formId = 'a00Dn0000049t0WIAQ';
+    invitation = {'sobjectType':'Form_Invitation__c'};              //Invitation object to store values
+    @track urlEnc;                                                  //URL variable
+    @track formId;                                                  //Form Id information
+    @track isActive = null;                                         //To check if the form is aviable
     checked = false;
-    
+
+    //URL information process
+    //Navigation API its necessary
+    @wire(CurrentPageReference)
+    getStateParameters(currentPageReference){
+        if (currentPageReference) {
+            this.urlEnc = currentPageReference.state?.EncryptedId__c;   //currentPageReference.state?.ParameterName to get the value of the parameter
+            this.urlEnc = this.urlEnc.replace(/\s/g, '+');              //URL correction to its original value
+
+            //Method to fetch Invitation Id
+            getInv({Encryption: this.urlEnc}).then(response =>{
+                this.invitation.Id = response[0].Id;
+                this.invitation.Account__c = response[0].Account__c;
+                this.invitation.Form__c = response[0].Form__c;
+                this.invitation.isActive__c = response[0].isActive__c;
+
+                this.isActive = this.invitation.isActive__c;
+                this.formId = this.invitation.Form__c;
+                // console.log(this.invitation);
+                // console.log(this.isActive);
+            })
+         }
+    }
+
     handleChange(e){
         
         let getQuestionName = e.target.name;                        //Getting question information
@@ -83,13 +111,13 @@ export default class Form extends LightningElement {
         //Setting values
         let id = this.formId;
         let responseList = this.responseList;
+        let invitationId = this.invitation.Id;
 
-        saveFormResponse({formId: id, responseList: responseList});     //Calling the method to create the records
+        saveFormResponse({formId: id, responseList: responseList, invitationId: invitationId});     //Calling the method to create the records
+        // console.log('FORM ID',this.formId);
+        // console.log('REPONSE LIST',JSON.stringify(this.responseList));
         this.showSuccess();
-        
-        console.log('FORM ID',this.formId);
-        console.log('REPONSE LIST',JSON.stringify(this.responseList));
-        
+        window.location.reload();
     }
 
     showSuccess(){
@@ -103,15 +131,4 @@ export default class Form extends LightningElement {
 
         this.dispatchEvent(evt);
     }
-
-
-    //MARKUP ONLY
-    // value = [];
-
-    // get options() {
-    //     return [
-    //         { label: 'Yes', value: 'option1' },
-    //         { label: 'No', value: 'option2' },
-    //     ];
-    // }
 }
